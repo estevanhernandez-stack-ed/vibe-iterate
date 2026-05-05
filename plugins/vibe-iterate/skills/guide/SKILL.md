@@ -20,7 +20,7 @@ This skill is **referenced by every command SKILL**, never invoked directly. It 
 - `atlas.jsonl` — append-only ledger. Schema: [`schemas/atlas-entry.schema.json`](schemas/atlas-entry.schema.json)
 - `config.json` — competitors, category, framework_pins. Schema: [`schemas/config.schema.json`](schemas/config.schema.json)
 - `radar.cache.json` — weekly scheduled-refresh output. Schema: [`schemas/radar-cache.schema.json`](schemas/radar-cache.schema.json)
-- `feedback.md` — user-maintained escape-hatch internal-signal source for v1.0 (Bug-bash mode reads this)
+- `feedback.md` — user-maintained escape-hatch internal-signal source for v1.0 (Bug-bash mode reads this; no schema — freeform markdown)
 
 If a command writes any of these files, validate the write against the schema first. Malformed writes corrupt the ledger and break downstream consumers.
 
@@ -32,7 +32,9 @@ If a command writes any of these files, validate the write against the schema fi
 | `vibe-cartographer` | Optional (auto-detected) | Heavy-iteration delegation target via Pattern #13 |
 | `context7` (MCP) | Optional (auto-detected) | Live framework-docs lookups at decision-time |
 
-For optional plugins: detect at command start, branch behavior based on availability. Never hard-fail when an optional plugin is absent. See `references/cart-detection.md` for the Cart-specific pattern; same shape applies to context7.
+For optional plugins: detect at command start, branch behavior based on availability. Never hard-fail when an optional plugin is absent. See `references/cart-detection.md` for the Cart-specific pattern; the optional-plugin detection technique generalizes, the delegation flow does not.
+
+Note: `schedule` becomes load-bearing in Plan 4 (radar refresh); banner modes and sidecars in earlier plans work without it.
 
 ## Hard rules (do not violate without explicit user opt-in)
 
