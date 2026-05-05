@@ -8,7 +8,7 @@ vibe-iterate ships the PR itself, with build muscle intentionally lighter than C
 
 ## Cart-present enhancement
 
-**Detection:** at the start of every banner-mode invocation, check whether Cart's namespace is available. Concretely: try invoking `vibe-cartographer:scope` as a probe (no-op invocation). If the skill resolves, Cart is installed.
+**Detection:** at the start of every banner-mode invocation, check whether Cart's namespace is available. Concretely: scan the available-skills list (surfaced in each turn's system reminder) for `vibe-cartographer:*` entries. If any resolve, Cart is installed. This is read-only and has zero side effects — never invoke a Cart skill as a probe; that would actually start the skill's flow (e.g., `vibe-cartographer:scope` would launch a scope interview and write `scope.md`).
 
 If Cart is installed AND the iteration is heavy (see "Heavy iteration threshold" below), delegate the planning chunks:
 1. Hand the iteration brief to `vibe-cartographer:scope`
