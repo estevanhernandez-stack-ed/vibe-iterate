@@ -6,7 +6,7 @@ Post-ship product iteration. Where vibe-cartographer takes you idea → v1, vibe
 
 ## Status
 
-**v0.1.0 — scaffold.** Directory structure and SKILL stubs in place. Implementation pending — see [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design spec.
+**v0.5.0 — Foundation.** Plugin shell loads, schemas validate, bare `/vibe-iterate` router works (reads project state, recommends a mode, asks before launching). No banner modes or sidecar tools yet — they land in Plan 2 onward. See [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design and [`docs/superpowers/plans/`](docs/superpowers/plans/) for implementation plans.
 
 ## Banner modes (v1.0)
 
