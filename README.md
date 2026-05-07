@@ -6,26 +6,33 @@ Post-ship product iteration. Where vibe-cartographer takes you idea → v1, vibe
 
 ## Status
 
-**v0.5.0 — Foundation.** Plugin shell loads, schemas validate, bare `/vibe-iterate` router works (reads project state, recommends a mode, asks before launching). No banner modes or sidecar tools yet — they land in Plan 2 onward. See [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design and [`docs/superpowers/plans/`](docs/superpowers/plans/) for implementation plans.
+**v1.0.0 — full release.** Plugin shell, schemas, shared guide, bare router, bootstrap (app-type identification + first-run interview), all 4 banner modes (feature-add, competitive, ux-polish, bug-bash), all 6 sidecars (radar, spy, scan-releases, rate, ship, upgrade), Cart-detection wired (Pattern #13 deferral with discovery upsell), session + friction logging (Levels 2 + 3 of the Self-Evolving Plugin Framework), and `:evolve` for self-reflection. See [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design.
 
-## Banner modes (v1.0)
+**Bootstrap** — first-time invocation in any repo runs an app-type identification + brief interview, then writes `.vibe-iterate/config.json`. Categories supported: web app, mobile app, desktop app, CLI tool, library/SDK, Claude Code plugin, monorepo, data/research, other. The bootstrap step is graceful — no preachy enumeration of what's missing; just acknowledges, infers what it can from the codebase, asks for what it can't (competitors), writes config.
 
-- `/vibe-iterate` — bare router; recommends a mode for the moment, asks before launching
-- `/vibe-iterate:feature-add` — what should we build next?
-- `/vibe-iterate:competitive` — what do they have that we don't?
-- `/vibe-iterate:ux-polish` — what's shipped but rough?
-- `/vibe-iterate:bug-bash` — what's broken according to users? (`feedback.md` only in v1.0)
+## Banner modes
 
-## Sidecar tools (v1.0)
+- `/vibe-iterate` — bare router; recommends a mode for the moment, asks before launching. On first run, hands off gracefully to `/vibe-iterate:bootstrap`.
+- `/vibe-iterate:bootstrap` — app-type identification + brief interview, writes `.vibe-iterate/config.json`. Idempotent (re-runnable to refresh stale config).
+- `/vibe-iterate:feature-add` — what should we build next? Multi-source candidate-driven (competitors + Product Hunt + framework releases + feedback.md).
+- `/vibe-iterate:competitive` — what do they have that we don't? Strategic-relevance scoring (match / differentiate / decline), not parity.
+- `/vibe-iterate:ux-polish` — what's shipped but rough? Walks routes/components/flows, scores by user-trust impact.
+- `/vibe-iterate:bug-bash` — what's broken according to users? Reads `feedback.md`; triages by severity × frequency × blast-radius. Dormant when `feedback.md` is missing (one-line nudge only).
 
-- `/vibe-iterate:radar` — what's new across your stack + competitor set since last visit
-- `/vibe-iterate:spy <url>` — one-shot competitive read on a single URL
-- `/vibe-iterate:scan-releases [package]` — what's new in this lib since you last bumped (or all libs)
-- `/vibe-iterate:rate <idea>` — score a feature idea against your shipped product
-- `/vibe-iterate:ship <brief>` — skip ingestion, ship from a hand-written brief
-- `/vibe-iterate:upgrade <package>` — bump one library + codemods if available
+## Sidecar tools
 
-## Install (once v1.0 ships)
+- `/vibe-iterate:radar` — what's new across your stack + competitor set since last visit. Reads weekly cache; offers manual refresh.
+- `/vibe-iterate:spy <url>` — one-shot competitive read on a single URL. Quotes positioning verbatim; analyzes overlap with your product.
+- `/vibe-iterate:scan-releases [package]` — what's new in this lib (or all libs) since you last bumped. Surfaces breaking changes, new features, security fixes, codemod availability.
+- `/vibe-iterate:rate <idea>` — score a feature idea against your shipped product on impact / fit / effort / regression-risk / user-trust-impact. Outputs *ship-now / queue / decline*.
+- `/vibe-iterate:ship <brief>` — express lane: skip ingestion, ship from a hand-written brief. Same regression-aware posture as the banner modes.
+- `/vibe-iterate:upgrade <package>` — surgical library bump with codemod if available, pre/post-flight tests, one PR.
+
+## Self-evolution
+
+- `/vibe-iterate:evolve` — reads the local session + friction logs (under `~/.claude/plugins/data/vibe-iterate/`), surfaces patterns, writes proposed plugin improvements to `docs/proposed-changes.md` for the maintainer to review. Never auto-applies. Per Este's standing rule: **no telemetry** — the data stays on your machine.
+
+## Install
 
 **Stable channel** — via the [Vibe Plugins marketplace](https://github.com/estevanhernandez-stack-ed/vibe-plugins):
 

@@ -14,6 +14,16 @@ This skill is **referenced by every command SKILL**, never invoked directly. It 
 - [`references/knowledge-sources.md`](references/knowledge-sources.md) — context7 MCP, scheduled-refresh cache, web-search fallback. How Ptolemy stays cutting-edge on big-shoulder software
 - [`references/cart-detection.md`](references/cart-detection.md) — Pattern #13 deferral, discovery upsell when Cart's missing, "heavy iteration" threshold
 - [`references/atlas-conventions.md`](references/atlas-conventions.md) — Atlas write rules, entry shape, read patterns
+- [`references/friction-triggers.md`](references/friction-triggers.md) — when each command logs which friction type at which confidence (per Pattern #6, used by the friction-logger SKILL)
+
+## Session + friction logging (Levels 2 + 3 of the Self-Evolving Plugin Framework)
+
+Two internal SKILLs that every banner mode and `bootstrap` invokes:
+
+- [`../session-logger/SKILL.md`](../session-logger/SKILL.md) — sentinel + terminal session entries, paired by sessionUUID, written to `~/.claude/plugins/data/vibe-iterate/sessions/<date>.jsonl`
+- [`../friction-logger/SKILL.md`](../friction-logger/SKILL.md) — append-only friction entries written to `~/.claude/plugins/data/vibe-iterate/friction.jsonl`
+
+The user-facing `/vibe-iterate:evolve` SKILL ([`../evolve/SKILL.md`](../evolve/SKILL.md)) reads both logs and proposes plugin improvements to `docs/proposed-changes.md` in the vibe-iterate solo repo. Sidecars (`:radar`, `:spy`, `:scan-releases`, `:rate`) do NOT log — they're read-only and short-lived.
 
 ## State files (per host project, under `.vibe-iterate/`)
 
