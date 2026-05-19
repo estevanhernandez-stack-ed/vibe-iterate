@@ -229,17 +229,16 @@ Add to `626labs-hub/content/site.json` `products` array, slotted after `vibe-car
   "claudeCode": true,
   "anthropicApproved": false,
   "meta": "<code>/vibe-iterate</code> · post-ship iteration",
-  "page": "/vibe-iterate/",
+  "productPage": "/vibe-iterate/",
   "screenshots": []
 }
 ```
 
 **Renderer hookup (`scripts/render-hub.py`):**
 
-The `page` field may or may not already be honored by the renderer. To verify and patch during implementation:
+The renderer already supports a `productPage` field (see line 472 of `render-hub.py`). When set, the product card renders an "Open product page" link to the given href. No patch needed — just use `productPage` in the JSON entry.
 
-- If supported → product card on the main hub gets a "View page" link to `/vibe-iterate/` automatically.
-- If not supported → small patch to `render-hub.py` to render the `page` field as an additional anchor on each product card. Backward-compatible — entries without `page` render as before.
+`PRODUCT_SIGILS` (line 189 of `render-hub.py`) maps each product id to a hand-tuned SVG sigil. Add a `vibe-iterate` entry; design the sigil to match the family aesthetic (atlas/compass-rose direction).
 
 **Hero chip update:** extend the `hero.chips` array in `site.json` with `{ "label": "vibe-iterate", "tone": "cyan" }`. Don't displace existing names.
 
@@ -314,8 +313,10 @@ The `page` field may or may not already be honored by the renderer. To verify an
 
 ## Open questions for implementation
 
-1. **`render-hub.py` `page` field support** — verify whether the existing renderer honors a `page` field on product entries, or whether a small patch is needed.
-2. **Local Design/ tokens** — confirm the hub repo's `Design/colors_and_type.css` is the right import path (vs. the global skill copy). If the hub doesn't have a local CSS token file, copy from the skill and store at `626labs-hub/vibe-iterate/styles.css`.
+All previously open questions resolved during spec review:
+
+1. ✅ **`render-hub.py` `productPage` field** — already supported; just set it on the JSON entry.
+2. ✅ **Local Design/ tokens** — `Design/colors_and_type.css` exists in the hub; use it.
 
 ## Implementation surfaces
 
@@ -324,8 +325,8 @@ Files to add or modify:
 - `626labs-hub/vibe-iterate/index.html` — new
 - `626labs-hub/vibe-iterate/styles.css` — new (or inlined in `index.html`)
 - `626labs-hub/vibe-iterate/copy.js` — new (small vanilla JS for install-block copy)
-- `626labs-hub/content/site.json` — add product entry + hero chip
-- `626labs-hub/scripts/render-hub.py` — patch if `page` field not already supported
+- `626labs-hub/content/site.json` — add product entry (with `productPage: "/vibe-iterate/"`) + hero chip
+- `626labs-hub/scripts/render-hub.py` — add `vibe-iterate` entry to `PRODUCT_SIGILS` (line 189)
 - `626labs-hub/assets/og-vibe-iterate.png` — new (custom card)
 - `626labs-hub/scripts/export-brand.py` — extend to render the custom OG card (optional; can be hand-built once instead)
 
