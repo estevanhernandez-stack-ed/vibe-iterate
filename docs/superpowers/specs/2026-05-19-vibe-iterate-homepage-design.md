@@ -37,9 +37,7 @@ The README in the solo repo is solid documentation, but it's not a storefront. T
 - **Fonts:** same loader pattern the hub's `index.html` already uses (Google Fonts `@import` or local TTFs from `fonts/`).
 - **Icons:** Lucide via CDN.
 - **Renderer integration:** none. `scripts/render-hub.py` only touches `index.html`'s `SITE_JSON` zones. The new page stands alone.
-- **OG image asset:** `626labs-hub/assets/og-vibe-iterate.png` (1200×630).
-  - v1: ship with a generic 626 Labs banner from `assets/brand/`.
-  - v2: custom card with navy field, "vibe-iterate" in Space Grotesk, "Maintain your Atlas." subhead, cyan→magenta swoosh, 626 Labs mark.
+- **OG image asset:** `626labs-hub/assets/og-vibe-iterate.png` (1200×630). Custom card: navy field, "vibe-iterate" in Space Grotesk, "Maintain your Atlas." subhead, cyan→magenta swoosh accent, 626 Labs mark in corner. Generated via a small addition to `scripts/export-brand.py` or hand-built.
 - **Pipeline touchpoints:** the existing `link-check.yml` workflow picks up the new page on next push automatically.
 
 ## Page layout (top to bottom)
@@ -318,7 +316,6 @@ The `page` field may or may not already be honored by the renderer. To verify an
 
 1. **`render-hub.py` `page` field support** — verify whether the existing renderer honors a `page` field on product entries, or whether a small patch is needed.
 2. **Local Design/ tokens** — confirm the hub repo's `Design/colors_and_type.css` is the right import path (vs. the global skill copy). If the hub doesn't have a local CSS token file, copy from the skill and store at `626labs-hub/vibe-iterate/styles.css`.
-3. **OG image v2 timing** — does the submission deadline require the custom OG card, or can it ship with the generic 626 Labs banner and upgrade later?
 
 ## Implementation surfaces
 
@@ -329,7 +326,8 @@ Files to add or modify:
 - `626labs-hub/vibe-iterate/copy.js` — new (small vanilla JS for install-block copy)
 - `626labs-hub/content/site.json` — add product entry + hero chip
 - `626labs-hub/scripts/render-hub.py` — patch if `page` field not already supported
-- `626labs-hub/assets/og-vibe-iterate.png` — new (v1 = generic placeholder; v2 = custom)
+- `626labs-hub/assets/og-vibe-iterate.png` — new (custom card)
+- `626labs-hub/scripts/export-brand.py` — extend to render the custom OG card (optional; can be hand-built once instead)
 
 ## Related
 
