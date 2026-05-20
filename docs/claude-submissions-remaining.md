@@ -4,6 +4,11 @@ Copy-paste values for the rest of the family. Paste fields as-is (real line brea
 
 **Status:** vibe-iterate submitted; vibe-doc, vibe-keystone, vibe-cartographer published. Below are the five not yet in the directory — including **vibe-taker**, which was missed from the original sweep (it shipped to the marketplace after this doc was first assembled).
 
+**Privacy policy** (same for every plugin — paste into the privacy field on each submission):
+```
+https://626labs.dev/privacy
+```
+
 > ⚠️ **vibe-sec — recommend holding.** The plugin is pre-release: it reserves the directory slot but has no working slash commands yet (only the CLI secret scanner ships today). Submitting a plugin whose commands don't run risks rejection. Either hold until the commands land, or submit with the honest "CLI available, plugin rolling out" framing below — your call.
 
 ---
