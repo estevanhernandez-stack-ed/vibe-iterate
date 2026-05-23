@@ -160,13 +160,13 @@ Pass criteria:
 - No PII beyond `project_dir` basename
 - No telemetry — files stay local, never sent anywhere
 
-## Verification 9 — `/vibe-iterate:evolve` on no data
+## Verification 9 — `/vibe-iterate:evolve-iterate` on no data
 
-Goal: confirm `:evolve` handles the no-data case gracefully.
+Goal: confirm `:evolve-iterate` handles the no-data case gracefully.
 
 Steps:
-1. In a fresh state (no `~/.claude/plugins/data/vibe-iterate/sessions/` or empty), run `/vibe-iterate:evolve`
-2. Expected: surface "No session or friction data yet. `:evolve` learns from your past `vibe-iterate` runs — invoke a banner mode a few times, then re-run `:evolve`." + exit
+1. In a fresh state (no `~/.claude/plugins/data/vibe-iterate/sessions/` or empty), run `/vibe-iterate:evolve-iterate`
+2. Expected: surface "No session or friction data yet. `:evolve-iterate` learns from your past `vibe-iterate` runs — invoke a banner mode a few times, then re-run `:evolve-iterate`." + exit
 
 Pass criteria:
 - No stack trace

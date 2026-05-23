@@ -6,7 +6,7 @@ Post-ship product iteration. Where vibe-cartographer takes you idea → v1, vibe
 
 ## Status
 
-**v1.0.0 — full release.** Plugin shell, schemas, shared guide, bare router, bootstrap (app-type identification + first-run interview), all 4 banner modes (feature-add, competitive, ux-polish, bug-bash), all 6 sidecars (radar, spy, scan-releases, rate, ship, upgrade), Cart-detection wired (Pattern #13 deferral with discovery upsell), session + friction logging (Levels 2 + 3 of the Self-Evolving Plugin Framework), and `:evolve` for self-reflection. See [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design.
+**v1.0.0 — full release.** Plugin shell, schemas, shared guide, bare router, bootstrap (app-type identification + first-run interview), all 4 banner modes (feature-add, competitive, ux-polish, bug-bash), all 6 sidecars (radar, spy, scan-releases, rate, ship, upgrade), Cart-detection wired (Pattern #13 deferral with discovery upsell), session + friction logging (Levels 2 + 3 of the Self-Evolving Plugin Framework), and `:evolve-iterate` for self-reflection. See [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design.
 
 **Bootstrap** — first-time invocation in any repo runs an app-type identification + brief interview, then writes `.vibe-iterate/config.json`. Categories supported: web app, mobile app, desktop app, CLI tool, library/SDK, Claude Code plugin, monorepo, data/research, other. The bootstrap step is graceful — no preachy enumeration of what's missing; just acknowledges, infers what it can from the codebase, asks for what it can't (competitors), writes config.
 
@@ -30,7 +30,7 @@ Post-ship product iteration. Where vibe-cartographer takes you idea → v1, vibe
 
 ## Self-evolution
 
-- `/vibe-iterate:evolve` — reads the local session + friction logs (under `~/.claude/plugins/data/vibe-iterate/`), surfaces patterns, writes proposed plugin improvements to `docs/proposed-changes.md` for the maintainer to review. Never auto-applies. Per Este's standing rule: **no telemetry** — the data stays on your machine.
+- `/vibe-iterate:evolve-iterate` — reads the local session + friction logs (under `~/.claude/plugins/data/vibe-iterate/`), surfaces patterns, writes proposed plugin improvements to `docs/proposed-changes.md` for the maintainer to review. Never auto-applies. Per Este's standing rule: **no telemetry** — the data stays on your machine.
 
 ## Install
 
