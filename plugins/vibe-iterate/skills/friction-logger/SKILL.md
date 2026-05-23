@@ -5,9 +5,9 @@ description: "Internal SKILL — not a slash command. Append-only friction captu
 
 # friction-logger — append-only friction capture
 
-Internal SKILL. Not a user-invocable slash command. Loaded by every banner mode (`feature-add`, `competitive`, `ux-polish`, `bug-bash`) and `bootstrap` at the trigger points listed in [`../guide/references/friction-triggers.md`](../guide/references/friction-triggers.md), and by `:evolve` at the start of analysis for orphan detection.
+Internal SKILL. Not a user-invocable slash command. Loaded by every banner mode (`feature-add`, `competitive`, `ux-polish`, `bug-bash`) and `bootstrap` at the trigger points listed in [`../guide/references/friction-triggers.md`](../guide/references/friction-triggers.md), and by `:evolve-iterate` at the start of analysis for orphan detection.
 
-Friction is captured silently — no confirmation prompts, no user-facing chatter. False positives poison `:evolve`, so when in doubt, **don't log**.
+Friction is captured silently — no confirmation prompts, no user-facing chatter. False positives poison `:evolve-iterate`, so when in doubt, **don't log**.
 
 ## Where the log lives
 
@@ -21,7 +21,7 @@ Friction is captured silently — no confirmation prompts, no user-facing chatte
 
 > When in doubt, don't log.
 
-A missed friction signal is recoverable through future runs producing the same friction. A false positive corrupts `:evolve`'s pattern weighting and is much harder to undo. Every defensive default in this SKILL exists to honor that asymmetry.
+A missed friction signal is recoverable through future runs producing the same friction. A false positive corrupts `:evolve-iterate`'s pattern weighting and is much harder to undo. Every defensive default in this SKILL exists to honor that asymmetry.
 
 ## Friction types
 
@@ -106,7 +106,7 @@ Scans the session log for sentinels without matching terminals (>24h old) and em
 
 | Caller | Invocation | Notes |
 |--------|------------|-------|
-| `:evolve` | `detect_orphans()` once at start of analysis | Catches orphan backlog before reading the session log |
+| `:evolve-iterate` | `detect_orphans()` once at start of analysis | Catches orphan backlog before reading the session log |
 | Every banner mode + `bootstrap` | `log(entry)` at trigger points listed in `friction-triggers.md` | One call per detected trigger. Conservative — when in doubt, skip |
 
 ## Failure modes
@@ -124,11 +124,11 @@ Scans the session log for sentinels without matching terminals (>24h old) and em
 
 ## Why this SKILL exists
 
-Friction signals are the empirical input to `:evolve`. Without them, `:evolve` can only reason from session logs (what happened) and absence-of-friction inference. Friction adds the unfiltered third channel: what the user actually did when the agent's choice didn't fit. Pattern #6's whole point: the signal must be cheap to write, conservative in scope, and safe to ignore on a per-call basis.
+Friction signals are the empirical input to `:evolve-iterate`. Without them, `:evolve-iterate` can only reason from session logs (what happened) and absence-of-friction inference. Friction adds the unfiltered third channel: what the user actually did when the agent's choice didn't fit. Pattern #6's whole point: the signal must be cheap to write, conservative in scope, and safe to ignore on a per-call basis.
 
 ## Cross-references
 
 - Sibling SKILL: [`../session-logger/SKILL.md`](../session-logger/SKILL.md) — sentinel + terminal session entries
 - Trigger map: [`../guide/references/friction-triggers.md`](../guide/references/friction-triggers.md) — when each command logs which friction type at which confidence
-- User-facing SKILL: [`../evolve/SKILL.md`](../evolve/SKILL.md) — reads friction + sessions, proposes improvements
+- User-facing SKILL: [`../evolve-iterate/SKILL.md`](../evolve-iterate/SKILL.md) — reads friction + sessions, proposes improvements
 - Framework reference (in vibe-cartographer): `docs/self-evolving-plugins-framework.md` Pattern #6

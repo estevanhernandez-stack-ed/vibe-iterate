@@ -2,7 +2,7 @@
 
 Source of truth for `friction-logger.log()` calls across vibe-iterate. One section per command. Each row names the trigger condition + the `friction_type` enum value + the fixed `confidence` level.
 
-**Rule:** confidence levels here are NOT agent-tunable. If a trigger feels mis-tuned, fix it here (and let `:evolve` propose the change) — don't override at log time.
+**Rule:** confidence levels here are NOT agent-tunable. If a trigger feels mis-tuned, fix it here (and let `:evolve-iterate` propose the change) — don't override at log time.
 
 **Universal triggers** apply to every command but require a quoted prior turn in `symptom`:
 
@@ -68,7 +68,7 @@ Per-command triggers below.
 |---|---|---|---|
 | User picks a lower-priority bug over the recommended top-priority one | `default_overridden` | `high` | Triage rubric was overridden |
 | Agent could not reproduce + user pauses | `default_overridden` | `medium` | Atlas entry: `outcome: queued`; ask user for repro steps |
-| User asks agent to skip the regression test | `default_overridden` | `high` | Hard rule violation requested; CRITICAL signal for `:evolve` |
+| User asks agent to skip the regression test | `default_overridden` | `high` | Hard rule violation requested; CRITICAL signal for `:evolve-iterate` |
 | User declines Cart-delegation upsell on a heavy bug fix | `complement_rejected` | `high` | `complement_involved: "vibe-cartographer"` |
 
 ---

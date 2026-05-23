@@ -1,9 +1,9 @@
 ---
-name: evolve
-description: "This skill should be used when the user says `/vibe-iterate:evolve` and wants vibe-iterate to reflect on past sessions and propose improvements to itself. Reads ~/.claude/plugins/data/vibe-iterate/ session logs + friction.jsonl, weights findings, writes proposed SKILL/trigger/rubric edits to docs/proposed-changes.md in the vibe-iterate solo repo. Never auto-applies. L3 self-evolution."
+name: evolve-iterate
+description: "This skill should be used when the user says `/vibe-iterate:evolve-iterate` and wants vibe-iterate to reflect on past sessions and propose improvements to itself. Reads ~/.claude/plugins/data/vibe-iterate/ session logs + friction.jsonl, weights findings, writes proposed SKILL/trigger/rubric edits to docs/proposed-changes.md in the vibe-iterate solo repo. Never auto-applies. L3 self-evolution."
 ---
 
-# /vibe-iterate:evolve — reflect on past sessions and propose improvements
+# /vibe-iterate:evolve-iterate — reflect on past sessions and propose improvements
 
 Read [`../guide/SKILL.md`](../guide/SKILL.md) for shared agent behavior (Ptolemy persona), then follow this command.
 
@@ -15,7 +15,7 @@ This is **Level 3** of the Self-Evolving Plugin Framework: the plugin reflects o
 
 ## Hard rules
 
-- **Read-only on the source data.** `:evolve` does not edit `~/.claude/plugins/data/vibe-iterate/` files. Sessions and friction logs are append-only; `:evolve` reads them.
+- **Read-only on the source data.** `:evolve-iterate` does not edit `~/.claude/plugins/data/vibe-iterate/` files. Sessions and friction logs are append-only; `:evolve-iterate` reads them.
 - **Never auto-applies proposed changes.** The output is `docs/proposed-changes.md` — a human-readable proposal. The maintainer reviews and applies.
 - **Suppress noise.** Apply confidence-weighted thresholds (described below). Don't surface every single friction entry as a proposal — only patterns.
 - **Cite evidence.** Every proposed change names the friction entries / session entries that motivated it. The maintainer should be able to grep the logs and verify.
@@ -26,9 +26,9 @@ This is **Level 3** of the Self-Evolving Plugin Framework: the plugin reflects o
 - **Source data:**
   - `~/.claude/plugins/data/vibe-iterate/sessions/*.jsonl` — daily session log files
   - `~/.claude/plugins/data/vibe-iterate/friction.jsonl` — append-only friction signals
-- **Output target:** `docs/proposed-changes.md` in the vibe-iterate solo repo (this file). If the file already exists from a prior `:evolve` run, append a new section with today's date — don't overwrite.
+- **Output target:** `docs/proposed-changes.md` in the vibe-iterate solo repo (this file). If the file already exists from a prior `:evolve-iterate` run, append a new section with today's date — don't overwrite.
 
-If neither source data file exists (fresh install with no usage), surface: *"No session or friction data yet. `:evolve` learns from your past `vibe-iterate` runs — invoke a banner mode a few times, then re-run `:evolve`."* and exit.
+If neither source data file exists (fresh install with no usage), surface: *"No session or friction data yet. `:evolve-iterate` learns from your past `vibe-iterate` runs — invoke a banner mode a few times, then re-run `:evolve-iterate`."* and exit.
 
 ## Procedure
 
@@ -120,11 +120,11 @@ Append (or create) `docs/proposed-changes.md` in the vibe-iterate solo repo. Sec
 ```markdown
 # vibe-iterate — proposed changes
 
-> Each section is a `:evolve` run output. Reviewer (Este) applies, defers, or declines per proposal.
+> Each section is a `:evolve-iterate` run output. Reviewer (Este) applies, defers, or declines per proposal.
 
 ---
 
-## :evolve run — YYYY-MM-DD
+## :evolve-iterate run — YYYY-MM-DD
 
 **Window:** last <N> days
 **Sources:** <count> sentinel entries, <count> terminal entries, <count> friction entries
@@ -152,14 +152,14 @@ Append (or create) `docs/proposed-changes.md` in the vibe-iterate solo repo. Sec
 
 ---
 
-## :evolve run — <next date>
+## :evolve-iterate run — <next date>
 ...
 ```
 
 ### Step 9 — close out
 
 ```
-:evolve complete.
+:evolve-iterate complete.
 
 Window: last <N> days
 Source: <count> sentinels / <count> terminals / <count> friction entries
@@ -180,8 +180,8 @@ Next:
 
 - **Don't auto-apply.** Even high-confidence patterns are proposals, not commits. The maintainer's eye is the gate.
 - **Don't surface raw friction entries.** Patterns ≥ thresholds, not individual events. Otherwise the proposed-changes file becomes a friction dump.
-- **Don't propose changes outside the plugin.** `:evolve` proposes edits to `plugins/vibe-iterate/` and `docs/`. It does NOT propose edits to host projects' code or other plugins.
-- **Don't read project-level files.** `:evolve` is plugin-meta. It reads `~/.claude/plugins/data/vibe-iterate/`, NOT `.vibe-iterate/atlas.jsonl` (that's project state).
+- **Don't propose changes outside the plugin.** `:evolve-iterate` proposes edits to `plugins/vibe-iterate/` and `docs/`. It does NOT propose edits to host projects' code or other plugins.
+- **Don't read project-level files.** `:evolve-iterate` is plugin-meta. It reads `~/.claude/plugins/data/vibe-iterate/`, NOT `.vibe-iterate/atlas.jsonl` (that's project state).
 
 ## Cross-references
 

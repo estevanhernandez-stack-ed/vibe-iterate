@@ -75,7 +75,7 @@ Shared by both entries unless noted.
 - **friction_notes** — array of short strings. Human-facing recap. The structured friction signal goes to `friction.jsonl` via `friction-logger.log()`.
 - **key_decisions** — array of short strings. High-signal decisions only. Examples: `"picked candidate #1"`, `"delegated to Cart"`, `"declined Cart upsell"`, `"queued (user paused)"`.
 - **atlas_outcome** — copy of the Atlas entry's `outcome` field for this run: `shipped` | `rejected` | `queued` | `null` (for `bootstrap`, which doesn't write Atlas).
-- **atlas_title** — copy of the Atlas entry's `title` field. Useful for `/evolve` analysis.
+- **atlas_title** — copy of the Atlas entry's `title` field. Useful for `/evolve-iterate` analysis.
 - **pr_url** — PR URL if the run shipped a PR; `null` otherwise.
 
 ## Procedure: `start(command, project_dir)`
@@ -132,12 +132,12 @@ Called by a command SKILL at completion, before exiting. Takes a partial entry w
 
 ## Why this exists
 
-The session log is raw material for **Level 3** of the Self-Evolving Plugin Framework. `/vibe-iterate:evolve` reads these entries (alongside `friction.jsonl`) to propose plugin improvements based on observed patterns.
+The session log is raw material for **Level 3** of the Self-Evolving Plugin Framework. `/vibe-iterate:evolve-iterate` reads these entries (alongside `friction.jsonl`) to propose plugin improvements based on observed patterns.
 
 The sentinel pattern lets `friction-logger.detect_orphans()` distinguish "user abandoned the command" from "command never ran" — abandonment is friction signal worth surfacing; non-execution isn't.
 
 ## Cross-references
 
 - Sibling SKILL: [`../friction-logger/SKILL.md`](../friction-logger/SKILL.md) — append-only friction capture
-- User-facing SKILL: [`../evolve/SKILL.md`](../evolve/SKILL.md) — reads sessions + friction, proposes improvements
+- User-facing SKILL: [`../evolve-iterate/SKILL.md`](../evolve-iterate/SKILL.md) — reads sessions + friction, proposes improvements
 - Framework reference (in vibe-cartographer): `docs/self-evolving-plugins-framework.md`

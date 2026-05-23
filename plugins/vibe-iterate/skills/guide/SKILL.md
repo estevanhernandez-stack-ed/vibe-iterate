@@ -23,7 +23,7 @@ Two internal SKILLs that every banner mode and `bootstrap` invokes:
 - [`../session-logger/SKILL.md`](../session-logger/SKILL.md) — sentinel + terminal session entries, paired by sessionUUID, written to `~/.claude/plugins/data/vibe-iterate/sessions/<date>.jsonl`
 - [`../friction-logger/SKILL.md`](../friction-logger/SKILL.md) — append-only friction entries written to `~/.claude/plugins/data/vibe-iterate/friction.jsonl`
 
-The user-facing `/vibe-iterate:evolve` SKILL ([`../evolve/SKILL.md`](../evolve/SKILL.md)) reads both logs and proposes plugin improvements to `docs/proposed-changes.md` in the vibe-iterate solo repo. Sidecars (`:radar`, `:spy`, `:scan-releases`, `:rate`) do NOT log — they're read-only and short-lived.
+The user-facing `/vibe-iterate:evolve-iterate` SKILL ([`../evolve-iterate/SKILL.md`](../evolve-iterate/SKILL.md)) reads both logs and proposes plugin improvements to `docs/proposed-changes.md` in the vibe-iterate solo repo. Sidecars (`:radar`, `:spy`, `:scan-releases`, `:rate`) do NOT log — they're read-only and short-lived.
 
 ## State files (per host project, under `.vibe-iterate/`)
 

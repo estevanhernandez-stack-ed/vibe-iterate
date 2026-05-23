@@ -1,7 +1,7 @@
 {
   "name": "vibe-iterate",
-  "version": "1.0.0",
-  "description": "Post-ship product iteration — pick a mode (feature-add, competitive, ux-polish, bug-bash) or reach for a sidecar (:radar, :spy, :scan-releases, :rate, :ship, :upgrade). One PR per session, regression-aware, small-diff-preferred. First-run bootstrap identifies the app type and interviews you for competitors + framework pins. Composes with vibe-cartographer when installed (heavy-iteration delegation). Self-evolves via session + friction logging — :evolve proposes improvements based on your usage patterns. No telemetry.",
+  "version": "1.1.0",
+  "description": "Post-ship product iteration — pick a mode (feature-add, competitive, ux-polish, bug-bash) or reach for a sidecar (:radar, :spy, :scan-releases, :rate, :ship, :upgrade). One PR per session, regression-aware, small-diff-preferred. First-run bootstrap identifies the app type and interviews you for competitors + framework pins. Composes with vibe-cartographer when installed (heavy-iteration delegation). Self-evolves via session + friction logging — :evolve-iterate proposes improvements based on your usage patterns. No telemetry.",
   "author": {
     "name": "626Labs LLC",
     "url": "https://github.com/estevanhernandez-stack-ed"
