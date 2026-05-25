@@ -61,7 +61,7 @@ Used repeatedly on real repos — and proven cross-agent: ran under Gemini in An
 
 ## Part of the Vibe ecosystem
 
-One of 11 plugins in the **[Vibe Plugins](https://github.com/estevanhernandez-stack-ed/vibe-plugins)** marketplace from [626 Labs](https://626labs.dev) — foundations (Thesis Engine, Keystone) and process pillars (Cartographer, Doc, Sec, Test, Thesis, Iterate, Taker, Walk, Insights) for AI-assisted creation. Iterate is the post-ship pillar: where Cartographer takes you idea → v1, Iterate takes you v1 → v1+n.
+Part of the **[Vibe Plugins](https://github.com/estevanhernandez-stack-ed/vibe-plugins)** marketplace from [626 Labs](https://626labs.dev) — foundations and process pillars for AI-assisted creation. Iterate is the post-ship pillar: where Cartographer takes you idea → v1, Iterate takes you v1 → v1+n.
 
 ```text
 /plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
