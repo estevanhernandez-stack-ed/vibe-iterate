@@ -1,25 +1,28 @@
-# vibe-iterate
+<p align="center">
+  <img alt="Vibe Iterate — post-ship product iteration, one PR at a time" src="https://626labs.dev/assets/brand/plugins/vibe-iterate-banner-1500x500.png" />
+</p>
 
-> **vibe-iterate maintains your Atlas.**
+# Vibe Iterate
 
-Post-ship product iteration. Where vibe-cartographer takes you idea → v1, vibe-iterate takes you v1 → v1+n — indefinitely. Pick a banner mode (feature-add, competitive, ux-polish, bug-bash) or reach for a sidecar tool (`:radar`, `:spy`, `:scan-releases`, `:rate`, `:ship`, `:upgrade`). Ships one PR per session — regression-aware, small-diff-preferred. The agent (Ptolemy) stays current on big-shoulder software via context7 and a weekly framework-release scan. Composes with vibe-cartographer when installed (Pattern #13 deferral); works standalone when it's not.
+**Post-ship product iteration — where vibe-cartographer takes you idea → v1, vibe-iterate takes you v1 → v1+n, indefinitely.**
 
-## Status
+[![stable](https://img.shields.io/github/v/tag/estevanhernandez-stack-ed/vibe-iterate?label=stable&color=17d4fa)](https://github.com/estevanhernandez-stack-ed/vibe-iterate/tags)
 
-**v1.0.0 — full release.** Plugin shell, schemas, shared guide, bare router, bootstrap (app-type identification + first-run interview), all 4 banner modes (feature-add, competitive, ux-polish, bug-bash), all 6 sidecars (radar, spy, scan-releases, rate, ship, upgrade), Cart-detection wired (Pattern #13 deferral with discovery upsell), session + friction logging (Levels 2 + 3 of the Self-Evolving Plugin Framework), and `:evolve-iterate` for self-reflection. See [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design.
+## What it does
 
-**Bootstrap** — first-time invocation in any repo runs an app-type identification + brief interview, then writes `.vibe-iterate/config.json`. Categories supported: web app, mobile app, desktop app, CLI tool, library/SDK, Claude Code plugin, monorepo, data/research, other. The bootstrap step is graceful — no preachy enumeration of what's missing; just acknowledges, infers what it can from the codebase, asks for what it can't (competitors), writes config.
+You shipped v1. Now what's next? Vibe Iterate maintains your Atlas — the running ledger of what you've shipped and why — and turns "what should we build next" into one focused PR per session. The posture is fixed: regression-aware, user-trust-aware, small-diff-preferred. The agent (Ptolemy) stays current on big-shoulder software via context7 and a weekly framework-release scan.
 
-## Banner modes
+Pick a banner mode for the moment, or reach for a sidecar tool when you already know the move:
+
+**Banner modes** — one PR per run, each with an Atlas entry:
 
 - `/vibe-iterate` — bare router; recommends a mode for the moment, asks before launching. On first run, hands off gracefully to `/vibe-iterate:bootstrap`.
-- `/vibe-iterate:bootstrap` — app-type identification + brief interview, writes `.vibe-iterate/config.json`. Idempotent (re-runnable to refresh stale config).
-- `/vibe-iterate:feature-add` — what should we build next? Multi-source candidate-driven (competitors + Product Hunt + framework releases + feedback.md).
+- `/vibe-iterate:feature-add` — what should we build next? Multi-source candidate-driven (competitors + Product Hunt + framework releases + `feedback.md`).
 - `/vibe-iterate:competitive` — what do they have that we don't? Strategic-relevance scoring (match / differentiate / decline), not parity.
 - `/vibe-iterate:ux-polish` — what's shipped but rough? Walks routes/components/flows, scores by user-trust impact.
 - `/vibe-iterate:bug-bash` — what's broken according to users? Reads `feedback.md`; triages by severity × frequency × blast-radius. Dormant when `feedback.md` is missing (one-line nudge only).
 
-## Sidecar tools
+**Sidecar tools** — sharp single-purpose reads and surgical moves:
 
 - `/vibe-iterate:radar` — what's new across your stack + competitor set since last visit. Reads weekly cache; offers manual refresh.
 - `/vibe-iterate:spy <url>` — one-shot competitive read on a single URL. Quotes positioning verbatim; analyzes overlap with your product.
@@ -28,37 +31,42 @@ Post-ship product iteration. Where vibe-cartographer takes you idea → v1, vibe
 - `/vibe-iterate:ship <brief>` — express lane: skip ingestion, ship from a hand-written brief. Same regression-aware posture as the banner modes.
 - `/vibe-iterate:upgrade <package>` — surgical library bump with codemod if available, pre/post-flight tests, one PR.
 
-## Self-evolution
+## How it works
 
-- `/vibe-iterate:evolve-iterate` — reads the local session + friction logs (under `~/.claude/plugins/data/vibe-iterate/`), surfaces patterns, writes proposed plugin improvements to `docs/proposed-changes.md` for the maintainer to review. Never auto-applies. Per Este's standing rule: **no telemetry** — the data stays on your machine.
+- **Bootstrap on first touch.** First invocation in any repo runs an app-type identification + brief interview, then writes `.vibe-iterate/config.json`. Categories supported: web app, mobile app, desktop app, CLI tool, library/SDK, Claude Code plugin, monorepo, data/research, other. The step is graceful — no preachy enumeration of what's missing; it acknowledges, infers what it can from the codebase, asks for what it can't (competitors), writes config. Idempotent — re-run to refresh stale config.
+- **One PR per session, by design.** Every banner mode lands a single regression-aware, small-diff PR plus an Atlas entry naming the candidates considered and the runners-up — so the *why* survives, not just the *what*.
+- **Composes with Cartographer, stands alone without it.** When vibe-cartographer is installed, vibe-iterate defers to it (Pattern #13 deferral with a discovery upsell); when it's not, vibe-iterate works standalone.
+- **Self-evolves on your machine, no telemetry.** `/vibe-iterate:evolve-iterate` reads the local session + friction logs (under `~/.claude/plugins/data/vibe-iterate/`), surfaces patterns, and writes proposed plugin improvements to `docs/proposed-changes.md` for the maintainer to review. Never auto-applies. Per Este's standing rule, the data stays local — Levels 2 + 3 of the Self-Evolving Plugin Framework.
+
+See [`docs/2026-05-04-vibe-iterate-design.md`](docs/2026-05-04-vibe-iterate-design.md) for the locked design.
+
+## Validated on
+
+Used repeatedly on real repos — and proven cross-agent: ran under Gemini in Antigravity 2.0, adapting on the fly. The plugin is not Claude-Code-locked; the posture and the Atlas discipline travel across agents.
 
 ## Install
 
-**Stable channel** — via the [Vibe Plugins marketplace](https://github.com/estevanhernandez-stack-ed/vibe-plugins):
+**Stable (recommended) — as a Claude Code plugin via the marketplace:**
 
-```
+```text
 /plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
-/plugin install vibe-iterate
+/plugin install vibe-iterate@vibe-plugins
 ```
 
-**Canary channel** — bleeding edge, latest `main`:
+**Canary — track this repo's `main`:**
 
+```text
+/plugin install vibe-iterate@estevanhernandez-stack-ed/vibe-iterate
 ```
-/plugin marketplace add estevanhernandez-stack-ed/vibe-iterate
-/plugin install vibe-iterate
+
+## Part of the Vibe ecosystem
+
+One of 11 plugins in the **[Vibe Plugins](https://github.com/estevanhernandez-stack-ed/vibe-plugins)** marketplace from [626 Labs](https://626labs.dev) — foundations (Thesis Engine, Keystone) and process pillars (Cartographer, Doc, Sec, Test, Thesis, Iterate, Taker, Walk, Insights) for AI-assisted creation. Iterate is the post-ship pillar: where Cartographer takes you idea → v1, Iterate takes you v1 → v1+n.
+
+```text
+/plugin marketplace add estevanhernandez-stack-ed/vibe-plugins
 ```
-
-## Family
-
-vibe-iterate is one plugin in the [Vibe Plugins family](https://github.com/estevanhernandez-stack-ed/vibe-plugins):
-
-- **vibe-cartographer** — greenfield: idea → v1
-- **vibe-iterate** — post-ship: v1 → v1+n *(this plugin)*
-- **vibe-doc** — documentation completeness
-- **vibe-test** — test coverage and tier enforcement
-- **vibe-sec** — security posture
-- **thesis-engine + vibe-thesis** — research authoring
 
 ## License
 
-MIT
+MIT — *Imagine Something Else.*
