@@ -27,7 +27,7 @@ At command start — call `session-logger.start("horizon", <project_dir>)` (see 
 
 At command end — call `session-logger.end({ sessionUUID, outcome, user_pushback, friction_notes, key_decisions, bets_considered, h1_seeded, map_revised })`. `outcome` is `mapped` (a full map was written), `partial` (user paused mid-flow), or `aborted` (user declined the map).
 
-Honor the friction trigger map at [`../guide/references/friction-triggers.md`](../guide/references/friction-triggers.md) — section `/vibe-iterate:horizon` — for which friction types to log at which confidence (`signal_drought`, `forecast_low_conviction`, `repeat_seed`, `cadence_drift`, `forced_pr_request`). Universal triggers (`repeat_question`, `rephrase_requested`) also apply; honor the defensive default — no quoted prior turn in `symptom` means don't log.
+Honor the friction trigger map at [`../guide/references/friction-triggers.md`](../guide/references/friction-triggers.md) — section `/vibe-iterate:horizon` — for the horizon-specific trigger conditions (signal drought, low conviction, repeat seed, cadence drift, forced-PR request) and which existing `friction_type` enum value each maps to. Universal triggers (`repeat_question`, `rephrase_requested`) also apply; honor the defensive default — no quoted prior turn in `symptom` means don't log.
 
 ## Inputs
 
@@ -150,8 +150,8 @@ Next:
 
 ## Anti-patterns
 
-- **Don't run Horizon every session.** It's a quarterly / inflection-point move. The bare `/vibe-iterate` router surfaces it after long tactical-shipping streaks; don't pre-empt that cadence. Log `cadence_drift` if invoked < 30 days after the last run.
-- **Don't open a PR.** If the user asks Horizon to ship something, log `forced_pr_request` and re-route: *"Horizon doesn't ship. If this bet is ripe (time-to-relevance 5, conviction ≥ 4), seed it to the Atlas and run `/vibe-iterate:feature-add` to ship it."*
+- **Don't run Horizon every session.** It's a quarterly / inflection-point move. The bare `/vibe-iterate` router surfaces it after long tactical-shipping streaks; don't pre-empt that cadence. Log the cadence-drift trigger (per friction-triggers.md) if invoked < 30 days after the last run.
+- **Don't open a PR.** If the user asks Horizon to ship something, log the forced-PR-request trigger (per friction-triggers.md) and re-route: *"Horizon doesn't ship. If this bet is ripe (time-to-relevance 5, conviction ≥ 4), seed it to the Atlas and run `/vibe-iterate:feature-add` to ship it."*
 - **Don't conflate `:forecast` and `:rate`.** Long-range bets get `:forecast` (/20, future-tuned dimensions). Near-term iterations get `:rate` (/25, effort + regression-risk). Using `:rate` on a years-out bet manufactures false precision.
 - **Don't promote a bet on enthusiasm.** Time-to-relevance derives the tier, not vibes. If a bet feels like an H1 but scores time-to-relevance 2, it's H3 — full stop.
 - **Don't drop H2 bets between runs.** Pre-flight (Step 2) carries forward H2/H3 bets that still hold. The map is a living doc, not a fresh slate every quarter.
