@@ -21,6 +21,7 @@ Pick a banner mode for the moment, or reach for a sidecar tool when you already 
 - `/vibe-iterate:competitive` — what do they have that we don't? Strategic-relevance scoring (match / differentiate / decline), not parity.
 - `/vibe-iterate:ux-polish` — what's shipped but rough? Walks routes/components/flows, scores by user-trust impact.
 - `/vibe-iterate:bug-bash` — what's broken according to users? Reads `feedback.md`; triages by severity × frequency × blast-radius. Dormant when `feedback.md` is missing (one-line nudge only).
+- `/vibe-iterate:horizon` — long-range banner mode. Ingests forward signals (stack/platform roadmaps, ecosystem/model curves, competitor trajectory, own-product trajectory), scores bets via `:forecast`, places them on a Three-Horizon map (H1/H2/H3), and seeds H1 bets into the Atlas for `feature-add` to pick up. **Never ships a PR.** Run quarterly.
 
 **Sidecar tools** — sharp single-purpose reads and surgical moves:
 
@@ -28,6 +29,7 @@ Pick a banner mode for the moment, or reach for a sidecar tool when you already 
 - `/vibe-iterate:spy <url>` — one-shot competitive read on a single URL. Quotes positioning verbatim; analyzes overlap with your product.
 - `/vibe-iterate:scan-releases [package]` — what's new in this lib (or all libs) since you last bumped. Surfaces breaking changes, new features, security fixes, codemod availability.
 - `/vibe-iterate:rate <idea>` — score a feature idea against your shipped product on impact / fit / effort / regression-risk / user-trust-impact. Outputs *ship-now / queue / decline*.
+- `/vibe-iterate:forecast <bet>` — long-range scoring sidecar. Scores a bet /20 on conviction / time-to-relevance / optionality / strategic-fit. Outputs *hedge-now / watch / park* + tier (H1/H2/H3). Called by `:horizon`; usable standalone.
 - `/vibe-iterate:ship <brief>` — express lane: skip ingestion, ship from a hand-written brief. Same regression-aware posture as the banner modes.
 - `/vibe-iterate:upgrade <package>` — surgical library bump with codemod if available, pre/post-flight tests, one PR.
 

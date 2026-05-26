@@ -75,6 +75,7 @@ Pick ONE based on the strongest signal:
 | Radar cache shows >3 framework releases since last shipped iteration | **feature-add** — fresh framework features may unblock prioritized items |
 | Recent commits show 3+ feature lands but no polish PRs (no commits matching `^(fix|polish|ui)`) | **ux-polish** — the surfaces are getting rough |
 | Atlas shows >5 recent shipped entries, no rejected ones | **feature-add** (with a gentle note: review the Atlas; you may be over-shipping without considering tradeoffs) |
+| Atlas shows ≥5 shipped tactical entries in the last 90 days AND no `mode:"horizon"` entry in that window | **horizon** (as alternative, never default) — you've been heads-down shipping; worth a look up? |
 | Nothing clearly in scope | **feature-add** as the safest default; let the user pivot |
 
 When two signals tie, prefer the mode the user has invoked LEAST recently (per Atlas history — count `mode` occurrences in the last 30 days, prefer least-frequent).
@@ -117,6 +118,6 @@ Skip the announcement on the first-run path (bootstrap does its own announcement
 ## Cross-references
 
 - Bootstrap SKILL: [`../bootstrap/SKILL.md`](../bootstrap/SKILL.md) — invoked on first run
-- Banner modes: [`../feature-add/SKILL.md`](../feature-add/SKILL.md), [`../competitive/SKILL.md`](../competitive/SKILL.md), [`../ux-polish/SKILL.md`](../ux-polish/SKILL.md), [`../bug-bash/SKILL.md`](../bug-bash/SKILL.md)
-- Sidecars: [`../radar/SKILL.md`](../radar/SKILL.md), [`../rate/SKILL.md`](../rate/SKILL.md), [`../spy/SKILL.md`](../spy/SKILL.md), [`../scan-releases/SKILL.md`](../scan-releases/SKILL.md), [`../ship/SKILL.md`](../ship/SKILL.md), [`../upgrade/SKILL.md`](../upgrade/SKILL.md)
+- Banner modes: [`../feature-add/SKILL.md`](../feature-add/SKILL.md), [`../competitive/SKILL.md`](../competitive/SKILL.md), [`../ux-polish/SKILL.md`](../ux-polish/SKILL.md), [`../bug-bash/SKILL.md`](../bug-bash/SKILL.md), [`../horizon/SKILL.md`](../horizon/SKILL.md)
+- Sidecars: [`../radar/SKILL.md`](../radar/SKILL.md), [`../rate/SKILL.md`](../rate/SKILL.md), [`../forecast/SKILL.md`](../forecast/SKILL.md), [`../spy/SKILL.md`](../spy/SKILL.md), [`../scan-releases/SKILL.md`](../scan-releases/SKILL.md), [`../ship/SKILL.md`](../ship/SKILL.md), [`../upgrade/SKILL.md`](../upgrade/SKILL.md)
 - Guide: [`../guide/SKILL.md`](../guide/SKILL.md)

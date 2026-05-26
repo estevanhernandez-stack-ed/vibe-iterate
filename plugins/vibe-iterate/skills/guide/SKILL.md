@@ -23,7 +23,7 @@ Two internal SKILLs that every banner mode and `bootstrap` invokes:
 - [`../session-logger/SKILL.md`](../session-logger/SKILL.md) — sentinel + terminal session entries, paired by sessionUUID, written to `~/.claude/plugins/data/vibe-iterate/sessions/<date>.jsonl`
 - [`../friction-logger/SKILL.md`](../friction-logger/SKILL.md) — append-only friction entries written to `~/.claude/plugins/data/vibe-iterate/friction.jsonl`
 
-The user-facing `/vibe-iterate:evolve-iterate` SKILL ([`../evolve-iterate/SKILL.md`](../evolve-iterate/SKILL.md)) reads both logs and proposes plugin improvements to `docs/proposed-changes.md` in the vibe-iterate solo repo. Sidecars (`:radar`, `:spy`, `:scan-releases`, `:rate`) do NOT log — they're read-only and short-lived.
+The user-facing `/vibe-iterate:evolve-iterate` SKILL ([`../evolve-iterate/SKILL.md`](../evolve-iterate/SKILL.md)) reads both logs and proposes plugin improvements to `docs/proposed-changes.md` in the vibe-iterate solo repo. Sidecars (`:radar`, `:spy`, `:scan-releases`, `:rate`, `:forecast`) do NOT log — they're read-only and short-lived.
 
 ## State files (per host project, under `.vibe-iterate/`)
 
@@ -31,6 +31,7 @@ The user-facing `/vibe-iterate:evolve-iterate` SKILL ([`../evolve-iterate/SKILL.
 - `config.json` — competitors, category, framework_pins. Schema: [`schemas/config.schema.json`](schemas/config.schema.json)
 - `radar.cache.json` — weekly scheduled-refresh output. Schema: [`schemas/radar-cache.schema.json`](schemas/radar-cache.schema.json)
 - `feedback.md` — user-maintained escape-hatch internal-signal source for v1.0 (Bug-bash mode reads this; no schema — freeform markdown)
+- `horizon.md` — living long-range strategy map (rewritten each `/vibe-iterate:horizon` run with a dated revision header). Git history is the audit trail of how it evolved; no separate ledger. Schema: none (markdown). H1 bets ALSO get an `atlas.jsonl` entry with `source: "horizon"` per [`schemas/atlas-entry.schema.json`](schemas/atlas-entry.schema.json).
 
 If a command writes any of these files, validate the write against the schema first. Malformed writes corrupt the ledger and break downstream consumers.
 

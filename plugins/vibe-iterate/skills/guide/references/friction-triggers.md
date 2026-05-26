@@ -95,7 +95,23 @@ Per-command triggers below.
 
 ---
 
-## Sidecar commands (`:radar`, `:spy`, `:scan-releases`, `:rate`)
+## `/vibe-iterate:horizon`
+
+| Trigger | friction_type | confidence | Notes |
+|---|---|---|---|
+| **Signal drought** — fewer than 3 candidate bets cluster from the four forward signals | `default_overridden` | `high` | The agent's expectation of finding hedgeable candidates didn't hold. Quote the count + which signals were thin in `symptom`. Also captured: user's choice (continue with thin pool / pause). |
+| **Low conviction** — every scored bet totals `< 11/20` (nothing crosses `watch`) | `default_overridden` | `high` | The forecast pool is high-noise. Quote the top score in `symptom`. |
+| **Repeat seed** — user pushes to re-seed a bet near-duplicating an Atlas `source:"horizon"` entry < 90 days old | `default_overridden` | `high` | The de-dup default was overridden. Quote both entries in `symptom`. |
+| **Cadence drift** — Horizon invoked < 30 days after the last horizon run with no inflection event named | `default_overridden` | `medium` | The quarterly cadence default was overridden. Soft signal — normal at inflection points. |
+| **Forced PR request** — user asks Horizon to open a PR instead of seeding | `default_overridden` | `high` | Hard rule violation requested; CRITICAL signal for `:evolve-iterate`. Re-route to `feature-add`, log this. |
+| `:forecast` returns rejection for ≥ 50% of candidates due to missing forward signals | `complement_rejected` | `medium` | Forward-signal sources (context7, WebSearch) failed or returned thin context. Set `complement_involved` to the failing source. |
+| User pivots from Horizon to a different mode mid-flow | `sequence_revised` | `high` | Captured at next-command-time when the sentinel from this run has no terminal but a different mode's sentinel appears. |
+
+Universal triggers (`repeat_question`, `rephrase_requested`) also apply. Defensive default applies: no quoted prior turn in `symptom` → don't log.
+
+---
+
+## Sidecar commands (`:radar`, `:spy`, `:scan-releases`, `:rate`, `:forecast`)
 
 These are read-only and short-lived. **Do NOT call session-logger or friction-logger** from them. Sidecars are ephemeral spot-tools; the friction signal isn't worth the entry cost.
 

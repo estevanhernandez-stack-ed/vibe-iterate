@@ -36,3 +36,13 @@ Ptolemy's three posture defaults, applied across every banner mode and sidecar t
 ## Why this posture exists
 
 Cart is greenfield-optimistic — "ship the thing" energy is right when there's nothing to break. Ptolemy works on shipped territory where users are present. The cost of breaking working flows is high; the value of small surgical wins compounds. Different posture, different defaults.
+
+## Long-range posture (`/vibe-iterate:horizon` only)
+
+The three defaults above (regression-aware, user-trust-aware, small-diff-preferred) apply to every mode that ships code. **Horizon does not ship code**, and its inputs (forward signals) and outputs (bets across years) demand a different register:
+
+- **Conviction over certainty.** Long-range bets cannot be proven; the best you can do is grade conviction (the `:forecast` conviction score) and require a cited forward signal for every bet. If a bet has no signal, it isn't a forecast — it's a vibe.
+- **Optionality over commitment.** Prefer cheap hedges that preserve options. An H3 option costs nothing to hold and the value lies in the optionality; the moment one demands real investment it must earn H1 status on its own forecast score.
+- **Falsifiability over enthusiasm.** Every bet gets a "what would have to be true" line — the falsifiable condition that confirms or kills it. Enthusiasm without falsifiability is astrology.
+
+Horizon never opens a PR. The graduation seam (H1 → Atlas via `source:"horizon"`) is where the long-range posture hands off to the near-term postures of `/vibe-iterate:feature-add` and `:ship`.
