@@ -14,7 +14,7 @@
     },
     "mode": {
       "type": "string",
-      "enum": ["feature-add", "competitive", "ux-polish", "bug-bash", "ship", "upgrade"],
+      "enum": ["feature-add", "competitive", "ux-polish", "bug-bash", "ship", "upgrade", "horizon"],
       "description": "The command the user invoked"
     },
     "outcome": {
@@ -40,6 +40,11 @@
     "pr": {
       "type": ["string", "null"],
       "description": "PR URL if outcome == shipped; null otherwise"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["horizon"],
+      "description": "Provenance marker. Set to \"horizon\" when this entry was seeded by /vibe-iterate:horizon (an H1 bet graduating into the tactical loop). Absent for ordinary entries."
     }
   }
 }
