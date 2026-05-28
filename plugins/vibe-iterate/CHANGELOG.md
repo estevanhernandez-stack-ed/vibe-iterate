@@ -2,7 +2,7 @@
 
 All notable changes to vibe-iterate are recorded here. Format loosely follows Keep a Changelog; versions track the `version` field in `.claude-plugin/plugin.json`.
 
-## [Unreleased]
+## [1.2.0] — 2026-05-28
 
 ### Added
 
@@ -13,6 +13,10 @@ All notable changes to vibe-iterate are recorded here. Format loosely follows Ke
 - New living state file: `.vibe-iterate/horizon.md` — long-range strategy map, rewritten each Horizon run (dated revision header). Git history is the audit trail.
 - Long-range posture documented in `guide/references/posture.md` (conviction-over-certainty, optionality-over-commitment, falsifiability-over-enthusiasm).
 - `/vibe-iterate:horizon` friction-trigger map added — five horizon-specific trigger conditions mapped to existing `friction_type` enum values (no new types invented).
+
+### Fixed
+
+- **Session + friction log writers — Windows write-path guidance.** Added a cross-platform "Append implementation" section to both `session-logger/SKILL.md` and `friction-logger/SKILL.md`. The `:evolve-iterate` run on 2026-05-28 surfaced ~18% corruption rate on entries written via double-quoted PowerShell append commands (interior `"` get escaped to `\"`, producing malformed JSON that the strict parser silent-drops, and `detect_orphans()` then false-positives against). Recommended path is `ConvertTo-Json -Compress | Add-Content` (or single-quoted literal); double-quoted append is now explicitly called out as the failure mode to avoid. See `docs/proposed-changes.md` for the evolve-iterate run report.
 
 ## [1.1.0]
 

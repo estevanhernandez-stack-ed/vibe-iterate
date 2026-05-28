@@ -87,7 +87,21 @@ These are load-bearing. Every code path through `log()` honors all four.
 1. **Build the full entry.** Start with caller's partial. Add audit fields (`schema_version: 1`, `timestamp`, `plugin: "vibe-iterate"`, `plugin_version`).
 2. **Apply the `repeat_question` gate.** If `friction_type === "repeat_question"` and `symptom` is missing, empty, or contains no quoted prior-turn snippet, exit silently.
 3. **Validate.** Required fields present? `friction_type` in enum? `confidence` in enum? `sessionUUID` non-empty? On failure, exit silently.
-4. **Append to `~/.claude/plugins/data/vibe-iterate/friction.jsonl`.** One JSON line. Create directory if missing. On write failure, warn to stderr and continue.
+4. **Append to `~/.claude/plugins/data/vibe-iterate/friction.jsonl`.** One JSON line per the [Append implementation](#append-implementation-cross-platform) note below. Create directory if missing. On write failure, warn to stderr and continue.
+
+## Append implementation (cross-platform)
+
+The JSON line must reach disk byte-for-byte intact. Some host shells escape interior `"` against the command string, producing `\"` artifacts that `:evolve-iterate` silent-drops on parse. Pick a serialize-then-append path that avoids the shell-quoting layer.
+
+**Recommended (any shell):** build the entry as a native object, serialize via the runtime's JSON encoder, write the compact result via the platform's append primitive.
+
+- **PowerShell:** `$entry | ConvertTo-Json -Compress | Add-Content -Path $file -Encoding utf8`
+- **Bash:** `printf '%s\n' "$(jq -c . <<<"$entry")" >> "$file"`
+- **Node:** `fs.appendFileSync(file, JSON.stringify(entry) + '\n')`
+
+**Acceptable:** pass a single-quoted JSON literal directly. PowerShell: `Add-Content -Path $file -Value '<single-quoted-json>'`. Single quotes prevent `$` expansion AND preserve interior `"` literally.
+
+**Avoid on PowerShell (and any shell that interprets double-quotes):** double-quoted-string append commands. Interior `"` get escaped to `\"` and the line becomes unparseable. This is the failure mode that introduced the v1.2.0 fix.
 
 ## Procedure: `detect_orphans()`
 

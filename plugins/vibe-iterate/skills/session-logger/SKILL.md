@@ -93,7 +93,7 @@ Called by a command SKILL at invocation. Returns the `sessionUUID` the command m
    - `command`: the calling command name.
    - `project_dir`: basename of cwd.
 3. **Build the sentinel entry** with `outcome: "in_progress"` and the audit fields.
-4. **Append to today's session file.** Path: `~/.claude/plugins/data/vibe-iterate/sessions/<today>.jsonl` (where `<today>` is `YYYY-MM-DD` in local time). Create the directory if missing. Append one JSON line.
+4. **Append to today's session file.** Path: `~/.claude/plugins/data/vibe-iterate/sessions/<today>.jsonl` (where `<today>` is `YYYY-MM-DD` in local time). Create the directory if missing. Append one JSON line per the [Append implementation](#append-implementation-cross-platform) note below.
 5. **On any failure** (file system error, permission denied), log a one-line warning to stderr and continue. Session logging is instrumentation, not critical path.
 6. **Return the `sessionUUID`** to the caller. The command holds it in memory for the duration of the run.
 
@@ -107,8 +107,22 @@ Called by a command SKILL at completion, before exiting. Takes a partial entry w
    - Start with the caller's partial entry (`sessionUUID`, `outcome`, `user_pushback`, `friction_notes`, `key_decisions`, `atlas_outcome`, `atlas_title`, `pr_url`).
    - Overlay audit fields exactly as in `start()`.
 2. **Match the sessionUUID.** The entry's `sessionUUID` MUST equal the value returned by `start()`. Never mint a new UUID here — that breaks orphan pairing.
-3. **Append to today's session file.** Same path as `start()`. Create directory if missing.
+3. **Append to today's session file.** Same path as `start()`. Create directory if missing. Same append discipline as `start()` — see [Append implementation](#append-implementation-cross-platform) below.
 4. **On any failure**, warn to stderr and continue. Same posture as `start()`.
+
+## Append implementation (cross-platform)
+
+The JSON line must reach disk byte-for-byte intact. Some host shells escape interior `"` against the command string, producing `\"` artifacts that `:evolve-iterate` silent-drops on parse and `detect_orphans()` may false-positive against. Pick a serialize-then-append path that avoids the shell-quoting layer.
+
+**Recommended (any shell):** build the entry as a native object, serialize via the runtime's JSON encoder, write the compact result via the platform's append primitive.
+
+- **PowerShell:** `$entry | ConvertTo-Json -Compress | Add-Content -Path $file -Encoding utf8`
+- **Bash:** `printf '%s\n' "$(jq -c . <<<"$entry")" >> "$file"`
+- **Node:** `fs.appendFileSync(file, JSON.stringify(entry) + '\n')`
+
+**Acceptable:** pass a single-quoted JSON literal directly to the append primitive. PowerShell: `Add-Content -Path $file -Value '<single-quoted-json>'`. Single quotes prevent `$` expansion AND preserve interior `"` literally.
+
+**Avoid on PowerShell (and any shell that interprets double-quotes):** double-quoted-string append commands like `Add-Content -Path $file -Value "<double-quoted-json>"`. Interior `"` get escaped to `\"`, the leading `{` gets a stray space prepended, and the resulting line is unparseable JSON. This is the failure mode that introduced the v1.2.0 fix.
 
 ## Failure modes
 
