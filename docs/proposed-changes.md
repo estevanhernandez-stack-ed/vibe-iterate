@@ -62,3 +62,65 @@ Two findings surfaced as below-threshold watches because (1) the first affects t
 - **Coverage gap.** `ux-polish`, `bug-bash`, `ship`, `upgrade` never invoked in 30 days. Not a problem (they are situational), but worth knowing if future evolve runs see the same shape: feature-add dominates by an order of magnitude.
 
 ---
+
+## :evolve-iterate run — 2026-06-09
+
+**Window:** last 30 days (2026-05-10 → 2026-06-09)
+**Sources (raw, in-window):** 11 sentinel lines, 11 terminal lines, 4 friction lines
+**Sources (strict-parse, malformed silent-dropped):** 10 sentinels, 10 terminals, 2 friction entries
+**Data delta since the 2026-05-28 run: zero new entries.** No session or friction writes since 2026-05-25 (file mtimes agree). The corpus is byte-identical to the prior run's; only the window moved — the 2026-05-07 vibe-Keystone bootstrap aged out, which is why bootstrap shows 1 run here vs 2 in the prior section.
+
+### Usage summary
+
+| Command | Runs | Completed | Abandoned | Pushback rate | Notes |
+|---|---|---|---|---|---|
+| bootstrap | 1 | 0 strict / 1 recovered | 0 | 0/1 = 0% | Celestia3 (2026-05-24). Terminal exists only as a corrupted line (pre-v1.2.0 serializer bug); reads as completed when recovered by eye. |
+| competitive | 1 | 1 | 0 | 1/1 = 100% | Same single 626labs-hub run the prior section analyzed; below the completed ≥ 10 floor, no signal. |
+| feature-add | 9 (8 strict) | 9 | 0 | 0/9 = 0% | 8 runs on 626labs-hub + 1 on Celestia3, all clean ships. The Celestia3 sentinel (`fc82bb49`) is one of the four corrupted 2026-05-24 lines, hence strict runs < completed. |
+| ux-polish | 0 | — | — | — | Never invoked. |
+| bug-bash | 0 | — | — | — | Never invoked. |
+| ship | 0 | — | — | — | Never invoked. |
+| upgrade | 0 | — | — | — | Never invoked. |
+
+`detect_orphans()` ran first per procedure: its 7-day scan window (2026-06-02 onward) contains no session files, so zero orphans, zero friction writes. Side effect worth naming: the Celestia3-bootstrap false-positive orphan flagged in the prior run's procedure notes is now permanently retired — the 2026-05-24 sentinel has aged out of the orphan scan window and can't re-fire.
+
+### Threshold check
+
+**No pattern threshold trips.** With zero new entries, nothing could have crossed since 2026-05-28:
+
+- `completion_rate < 0.6` needs runs ≥ 10 — max is feature-add at 9.
+- `pushback_rate > 0.3` needs completed ≥ 10 — max is feature-add at 9; competitive's 100% sits on n=1.
+- `default_overridden` > 5 per command — feature-add peaks at 3 recovered (2 strict).
+- `complement_rejected` ≥ 5, `command_abandoned` > 3, `repeat_question` ≥ 3 — all at 0.
+
+### Proposed changes
+
+**None this run.** No threshold tripped and no new evidence arrived. Re-deriving proposals from the same corpus the 2026-05-28 section already analyzed would be noise, not signal.
+
+### Watch item re-weigh — autonomy-gate penalty for `:rate` (prior finding #2)
+
+**Stays parked.** Re-weighed with the full window:
+
+- **No new signal.** 0 friction entries logged since 2026-05-25. Count holds at 3 recovered (2 strict-parse) `default_overridden` on feature-add vs the >5 threshold. Two of the three (`4e0e3172`, `07cfad70`) name the voice-gating mechanism; the third (`fc82bb49`) is a batch-ship ask the prior run grouped in.
+- **Expiry warning.** All three supporting entries date 2026-05-24/25 and leave a 30-day window by 2026-06-25. If no banner-mode runs land before the next evolve run, the watch shows zero in-window evidence. That's the rubric working as designed — stale signal shouldn't drive edits — but the watch then expires by aging, not by resolution. Worth knowing when a future run reads "0 entries."
+- **Counter-signal to carry forward** if the pattern ever crosses threshold: session `56db624f` (2026-05-24) shipped the long-deferred voice-gated candidate on direct request — agent-drafted copy + copy-reviewer + verify, PR as the approval surface — and logged the calibration note that "'needs your voice' doesn't always mean defer." If a fix ships someday, "draft the gated candidate and stage the PR as the approval surface" competes with (or complements) the rank-penalty shape proposed in the prior section. Decide then, with data.
+
+### Below-threshold signals (excluded from proposals)
+
+Logged so the exclusion is auditable; none crosses its bar.
+
+1. **Voice-gated top-rank deferral** — 3 recovered / 2 strict vs >5. The watch item above.
+2. **`:rate` scoring-assumption miss** — 1 entry (`4e0e3172`: 18/25 assumed a uniform command/skill structure; verification disproved it mid-build, forcing a semantics fork). Distinct mechanism from voice-gating (score confidence vs candidate gating); would need its own recurrence to act on.
+3. **Batch-ship ask** — 1 recovered entry (`fc82bb49`: user wanted candidates #1+#2 in one run; flow forced sequential).
+4. **Bootstrap competitor-input UX** — 1 recovered low-confidence entry (`8d22fb48`: non-URL competitor description skipped).
+5. **Competitive pushback** — 1/1, below the completed ≥ 10 floor; both pushback events were substantive scope/style calls, not recommendation rejections (per prior section).
+6. **Atlas-staleness candidate pollution** — 2 session friction_notes (`b4594611`, `42bf67b1`): already-shipped work re-surfaced as candidates because out-of-band ships had no Atlas record; verify-before-build caught both. No structured friction type covers this today; if it recurs, it may justify a trigger-map row (type b). Watch, don't act.
+
+### Procedure notes (maintainer-facing)
+
+- **Prior finding #1 (Windows serializer corruption): applied in v1.2.0, not re-proposed.** Field validation still pending — every entry in the corpus is plugin_version 1.0.0/1.1.0; zero post-v1.2.0 writes exist yet. The first post-v1.2.0 banner-mode run on a Windows shell is the real test; one glance at the appended line settles it.
+- **Hand-repair of the four corrupted 2026-05-24 lines is now fidelity-only.** The orphan false-positive rationale is gone (aged out of the 7-day scan). Remaining cost of leaving them: strict-parse undercounts Celestia3 activity (bootstrap completion, `fc82bb49` sentinel, 2 friction entries) until evolve runs on/after 2026-06-24, when they leave the 30-day analysis window too. After that, repair is purely archival.
+- **15 days of log silence (2026-05-25 → 2026-06-09).** The logs can't distinguish "no banner-mode runs happened" from "runs happened and logging silently failed." If banner modes were in fact run in this span, that's a logging regression to investigate — and it would also mean the v1.2.0 field validation above is overdue.
+- **Coverage gap persists.** ux-polish, bug-bash, ship, upgrade: still zero lifetime runs. feature-add dominates by an order of magnitude, same shape as the prior section.
+
+---
