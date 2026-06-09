@@ -124,6 +124,8 @@ The JSON line must reach disk byte-for-byte intact. Some host shells escape inte
 
 **Avoid on PowerShell (and any shell that interprets double-quotes):** double-quoted-string append commands like `Add-Content -Path $file -Value "<double-quoted-json>"`. Interior `"` get escaped to `\"`, the leading `{` gets a stray space prepended, and the resulting line is unparseable JSON. This is the failure mode that introduced the v1.2.0 fix.
 
+**Also avoid Windows PowerShell 5.1 for the append:** its `-Encoding utf8` writes a BOM, and a BOM-prefixed line breaks strict `json.loads` on read — the same silent-drop class as the v1.2.0 bug. Use pwsh 7+ (BOM-less `utf8`) or pass `utf8NoBOM` explicitly.
+
 ## Failure modes
 
 - **No write permission on `~/.claude/plugins/data/`** → log fails silently. The command continues. The user never sees a session-logger error.

@@ -103,6 +103,8 @@ The JSON line must reach disk byte-for-byte intact. Some host shells escape inte
 
 **Avoid on PowerShell (and any shell that interprets double-quotes):** double-quoted-string append commands. Interior `"` get escaped to `\"` and the line becomes unparseable. This is the failure mode that introduced the v1.2.0 fix.
 
+**Also avoid Windows PowerShell 5.1 for the append:** its `-Encoding utf8` writes a BOM, and a BOM-prefixed line breaks strict `json.loads` on read — the same silent-drop class as the v1.2.0 bug. Use pwsh 7+ (BOM-less `utf8`) or pass `utf8NoBOM` explicitly.
+
 ## Procedure: `detect_orphans()`
 
 Scans the session log for sentinels without matching terminals (>24h old) and emits one `command_abandoned` friction entry per orphan.
