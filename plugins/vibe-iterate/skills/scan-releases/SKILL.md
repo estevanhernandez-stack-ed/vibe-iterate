@@ -1,6 +1,6 @@
 ---
 name: scan-releases
-description: "This skill should be used when the user says `/vibe-iterate:scan-releases [package]` and wants to know what's new in a specific lib (or all libs) since they last bumped. Reads package.json pins, queries release notes via context7 + web search, outputs per-package list of breaking changes, new features, security fixes, codemod availability."
+description: "This skill should be used when the user says `/vibe-iterate:scan-releases [package]` and wants to know what's new in a specific lib (or all libs) since they last bumped. Reads manifest pins (package.json, pyproject.toml, Cargo.toml, go.mod, *.csproj/NuGet), queries release notes via context7 + web search + registry APIs, outputs per-package list of breaking changes, new features, security fixes, codemod availability."
 ---
 
 # /vibe-iterate:scan-releases [package] — what's new since you last bumped
@@ -22,7 +22,7 @@ Read-only. Does NOT bump anything — that's `:upgrade`'s job. The output is dec
 ## Inputs
 
 - **`$1`** — optional. The package name (e.g., `next`, `react`, `vitest`). If absent, scans all libraries from `package.json`'s `dependencies` + `devDependencies`. Cap at 20 libraries when scanning all (skip `@types/*`, `eslint*`, `prettier`, `typescript` unless they're load-bearing).
-- **Project state** — `package.json` (or stack equivalent: `pyproject.toml`, `Cargo.toml`, `go.mod`). If no manifest file is present, surface: *"No package manifest found. :scan-releases needs a package.json (or pyproject.toml / Cargo.toml / go.mod) to know what's pinned."*
+- **Project state** — `package.json` (or stack equivalent: `pyproject.toml`, `Cargo.toml`, `go.mod`, `*.csproj`). If no manifest file is present, surface: *"No package manifest found. :scan-releases needs a package.json (or pyproject.toml / Cargo.toml / go.mod / *.csproj) to know what's pinned."*
 
 ## Procedure
 
@@ -34,6 +34,7 @@ Identify the package(s) to scan:
 - **`pyproject.toml`** — read `[project.dependencies]` (PEP 621) or `[tool.poetry.dependencies]` (Poetry).
 - **`Cargo.toml`** — read `[dependencies]`.
 - **`go.mod`** — read top-level `require` block.
+- **`*.csproj`** (v1.3.0) — read `<PackageReference Include="X" Version="Y" />` across the solution's projects (search root + two levels for nested .NET trees), deduped. Skip `PrivateAssets="all"` build-time analyzers unless named explicitly. When `packages.lock.json` exists, prefer its resolved versions as `current_pin`. A `.vibe-iterate/config.json` pin carrying `"ecosystem": "nuget"` routes here directly.
 
 If `[package]` arg was provided, filter to just that one. If not in the manifest, surface: *"`<package>` is not in the manifest. Did you mean: <fuzzy matches>?"*
 
@@ -44,6 +45,7 @@ For each package, in priority order:
 1. **context7 MCP** (preferred) — `mcp__context7__resolve-library-id` to get the canonical ID, then `mcp__context7__query-docs` with the question: *"What's new in `<package>` since version `<current_pin>`? List breaking changes, new features, security fixes, and whether a codemod tool exists for the migration."*
 2. **Web search fallback** — if context7 doesn't cover the package or returns empty, query: `<package> changelog since <current-pin>` and `<package> codemod migration <latest-version>`.
 3. **GitHub releases API** — if the package's repository is on GitHub (read from `package.json.repository` if present), `gh api repos/<owner>/<repo>/releases` and parse release notes for tags between `current_pin` and `latest`.
+4. **NuGet pins** (v1.3.0): resolve `latest` via the flat-container API — `https://api.nuget.org/v3-flatcontainer/<package-id-lowercase>/index.json` returns the full version list (no auth). For release notes, read the repository URL from the package's nuget.org registration (or the csproj comment trail) and fall back to the GitHub releases path above. NuGet versions are exact pins, not ranges — `latest_in_range` equals `current_pin`, so the digest's actionable line is the latest-available delta.
 
 For each package, capture:
 

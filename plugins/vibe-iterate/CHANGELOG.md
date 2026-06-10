@@ -2,6 +2,24 @@
 
 All notable changes to vibe-iterate are recorded here. Format loosely follows Keep a Changelog; versions track the `version` field in `.claude-plugin/plugin.json`.
 
+## [1.3.0] — 2026-06-09 · .NET/NuGet lane (GAP-13 Tier 2)
+
+From the quality-net gap analysis (vibe-plugins `docs/quality-net-gap-analysis-2026-06-09.md`): dependency upgrades are the riskiest operation on a store-shipped app, and the estate's MS Store app had zero support — bootstrap couldn't classify it, `:scan-releases` and `:upgrade` couldn't see its pins.
+
+### Added
+
+- **Bootstrap classifies .NET** — `.sln`/`*.csproj` detection (root + two levels down; real repos nest the .NET tree), `OutputType` + `UseWPF`/`UseWinUI` → desktop-app / cli-tool / library-sdk, framework anchor from `<TargetFramework>` (e.g. `.NET 10 WPF`).
+- **Pin extraction from csproj** — `<PackageReference>` entries deduped across the solution, `PrivateAssets="all"` analyzers skipped (the `@types/*` equivalent), `<TargetFramework>` captured as a pseudo-pin (runtime bumps are the riskiest .NET upgrade class).
+- **`:scan-releases` NuGet dispatch** — version resolution via the nuget.org flat-container API (no auth), release notes via the package's GitHub repo; `packages.lock.json` preferred for resolved versions when present.
+- **`:upgrade` NuGet mechanics** — deduped `Version`-attribute bump across the solution's projects, `dotnet restore` + `dotnet build` as the install-equivalent, `dotnet list package --outdated` verification; codemods honestly declared N/A for the NuGet world.
+- **Config schema:** `framework_pins[]` items gain optional `ecosystem` (`npm | nuget | pypi | cargo | go`).
+
+### Migration note (state contract — promotion-checklist rule 6)
+
+`ecosystem` is additive, and bootstrap **only writes it for non-npm pins** — JS-project configs stay byte-identical, so a config written by 1.3.0 for a JS app still validates against pre-1.3.0's `additionalProperties: false` schema. A `.NET` config will NOT validate on pre-1.3.0 plugins (they couldn't iterate on .NET anyway). No re-bootstrap needed for existing projects.
+
+Dogfooded read-only on Sanduhr (the MS Store app, `windows-dotnet/src/*`): classifies desktop-app / `.NET 10 WPF`, extracts 5 pins + the `net10.0-windows` pseudo-pin, correctly skips `Microsoft.Windows.CsWin32` (PrivateAssets=all); live NuGet API check confirms `CommunityToolkit.Mvvm 8.4.2` is current — a true negative, the pins are fresh.
+
 ## [1.2.0] — 2026-05-28
 
 ### Added

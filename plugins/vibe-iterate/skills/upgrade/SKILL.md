@@ -88,8 +88,9 @@ Update `package.json` (or stack equivalent):
 
 - For `package.json`: replace the version range for `<package>` with the target version range. Default: pin to `^<target>` (caret range allowing future patch + minor). If the user passed `--to <exact-version>`, use the exact version (no caret).
 - Run the package manager's install: `pnpm install` (preferred — repo uses pnpm) or `npm install` if no `pnpm-lock.yaml` is present. If `yarn.lock` is the only lockfile, use `yarn install`.
+- **For `*.csproj` / NuGet pins** (v1.3.0): edit the `Version` attribute on the `<PackageReference>` in every project that pins it (deduped bump — a solution must not carry two versions of the same package after the bump). NuGet pins are exact, no caret. Then `dotnet restore` and `dotnet build` the solution as the install-equivalent; `dotnet list package --outdated` is the verification read. Codemods are generally N/A in the NuGet world (step 6 will usually no-op — say so rather than inventing one); breaking-change handling is the post-flight build + test run's job.
 
-Capture install errors. If install fails (peer-dep conflict, version not found), surface the error verbatim and pause for user direction.
+Capture install errors. If install fails (peer-dep conflict, version not found, NuGet restore failure), surface the error verbatim and pause for user direction.
 
 ### Step 6 — run codemod (if available and not `--no-codemod`)
 

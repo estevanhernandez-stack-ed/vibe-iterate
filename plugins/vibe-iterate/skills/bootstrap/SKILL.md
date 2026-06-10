@@ -61,8 +61,13 @@ Read these files (in order; stop reading once classification is unambiguous):
    - Otherwise → **library / SDK**
 4. **`Cargo.toml`** — `[[bin]]` present → **CLI tool**; only `[lib]` → **library / SDK**
 5. **`go.mod`** — has `main` package in `cmd/` or root → **CLI tool / service**; only sub-packages → **library**
-6. **Multiple workspaces** (pnpm-workspace.yaml, lerna.json, Cargo workspace, multi-`package.json` under `packages/` or `apps/`) → **monorepo** (set as primary; sub-classify the most active workspace as the iteration target)
-7. **None of the above match cleanly** — read `README.md` first 50 lines and infer; if still ambiguous, classify as **other** and surface the inference uncertainty in step 2.
+6. **`.sln` / `*.csproj`** (v1.3.0 — search the root and up to two levels down; real repos nest the .NET tree, e.g. `windows-dotnet/src/<project>/<project>.csproj`) — read the app-shaped csproj:
+   - `<OutputType>WinExe</OutputType>` + `<UseWPF>` / `<UseWinUI>` → **desktop app** (.NET)
+   - `<OutputType>Exe</OutputType>` → **CLI tool / service**
+   - No `OutputType` (library default) → **library / SDK**
+   Framework anchor from `<TargetFramework>` plus the UI stack (e.g., `.NET 10 WPF`). A multi-project solution iterates on the `WinExe`/`Exe` project; class-library siblings are pin sources, not the target.
+7. **Multiple workspaces** (pnpm-workspace.yaml, lerna.json, Cargo workspace, multi-`package.json` under `packages/` or `apps/`, multi-project `.sln`) → **monorepo** (set as primary; sub-classify the most active workspace as the iteration target)
+8. **None of the above match cleanly** — read `README.md` first 50 lines and infer; if still ambiguous, classify as **other** and surface the inference uncertainty in step 2.
 
 Categories the agent classifies into (canonical strings — match exactly when writing config):
 
@@ -99,8 +104,9 @@ From the inferred stack's manifest file:
 - **`pyproject.toml`** — read `[project.dependencies]` (PEP 621) or `[tool.poetry.dependencies]` (Poetry). Same cap.
 - **`Cargo.toml`** — read `[dependencies]`. Same cap.
 - **`go.mod`** — read top-level `require` block. Same cap.
+- **`*.csproj`** (v1.3.0) — read `<PackageReference Include="X" Version="Y" />` entries across the solution's projects, deduped. Skip build-time analyzers (`PrivateAssets="all"` packages — the `@types/*` equivalent) unless load-bearing. Also pin the `<TargetFramework>` itself as a pseudo-pin (e.g., `net10.0-windows`) — runtime bumps are the riskiest .NET upgrade class. Same cap.
 
-For each pin, capture `{ "name": "<package>", "version": "<version-string>" }`. If the version is a range (`^16.0.0`, `~4.1.0`), keep the range string verbatim — don't resolve to a concrete version.
+For each pin, capture `{ "name": "<package>", "version": "<version-string>" }`. If the version is a range (`^16.0.0`, `~4.1.0`), keep the range string verbatim — don't resolve to a concrete version. **For non-npm pins, add `"ecosystem": "<nuget | pypi | cargo | go>"`** so `:scan-releases` knows which registry to query; npm pins stay bare (`ecosystem` omitted) so configs written for JS projects are byte-compatible with older plugin versions, whose schema rejects unknown fields.
 
 If no manifest file exists (e.g., a pure-shell or pure-content repo), `framework_pins` is `[]`.
 

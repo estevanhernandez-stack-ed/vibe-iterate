@@ -25,10 +25,15 @@
         "additionalProperties": false,
         "properties": {
           "name": { "type": "string", "minLength": 1 },
-          "version": { "type": "string", "minLength": 1 }
+          "version": { "type": "string", "minLength": 1 },
+          "ecosystem": {
+            "type": "string",
+            "enum": ["npm", "nuget", "pypi", "cargo", "go"],
+            "description": "Registry to query for this pin. Omitted = npm (back-compat: bootstrap only writes this field for non-npm pins, so JS-project configs stay byte-compatible with pre-1.3.0 validators)."
+          }
         }
       },
-      "description": "Framework/SDK pins as scanned from package.json. Used by scheduled radar refresh and :scan-releases."
+      "description": "Framework/SDK pins as scanned from the project manifest (package.json, pyproject.toml, Cargo.toml, go.mod, *.csproj). Used by scheduled radar refresh and :scan-releases."
     },
     "last_inferred_at": {
       "type": "string",
