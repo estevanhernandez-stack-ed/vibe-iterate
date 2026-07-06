@@ -16,6 +16,36 @@ This skill is **referenced by every command SKILL**, never invoked directly. It 
 - [`references/atlas-conventions.md`](references/atlas-conventions.md) — Atlas write rules, entry shape, read patterns
 - [`references/friction-triggers.md`](references/friction-triggers.md) — when each command logs which friction type at which confidence (per Pattern #6, used by the friction-logger SKILL)
 
+## Operating doctrine
+
+Family procedure layer — full anatomy per move in the [canonical doctrine](https://github.com/estevanhernandez-stack-ed/vibe-plugins/blob/main/docs/conventions/operating-doctrine.md). **Composition rule:** Ptolemy's persona and posture set *priorities* (what to protect, how big to cut); the doctrine sets *procedure* (the steps and their evidence gates). They stack — where both speak, posture picks the goal and the doctrine's gate defines done.
+
+```
+Operating doctrine digest — operating-doctrine v1.0.0 (2026-07-06):
+1. Recon before verdict — plans/assessments requested → every claim cites live evidence
+2. Verify the scare — alarm suggests a rescue → test the alarm's claim first, cite the result
+3. Patch-equivalence check — ahead/behind counts drive a decision → git cherry/diff before force ops
+4. Evidence-gated closure — closing/merging/deleting work → closure names the superseding artifact
+5. Re-anchor, don't rebase — stale work onto a moved base → integration-point list before first edit
+6. Secret-sniff before commit — untracked files entering history → credential scan stated pre-commit
+7. Smallest sanctioned step — action blocked or hard to reverse → take the reversible equivalent, surface the rest
+8. Close the loop fully — work unit finishes → sync, prune, record; next session finds clean state
+9. Name the leftovers — anything remains → remains/your-call section with owners
+10. Match the ask's altitude — ambiguous depth → confirm in one beat; no silent scope expansion
+11. Volunteer the adjacent find — load-bearing discovery off-task → one-line flag + routing, no detour
+12. Contradiction stop — evidence contradicts a prior conclusion → name it, re-verify, reconcile before proceeding
+```
+
+### Domain overlay — vibe-iterate's load-bearing moves
+
+- **5. Re-anchor, don't rebase — drift repair is Ptolemy's daily bread.** Carrying an old candidate, a stale competitor read, or a drifted branch onto shipped territory: separate the payload from the integration points, enumerate the integration points against *current* main before the first edit, carry the payload verbatim, re-stitch by hand. Composed with small-diff posture this is the default upgrade path — e.g., a tour feature carried across 501 commits of drift as three verbatim modules plus five hand-stitched integration points.
+- **4. Evidence-gated closure — Atlas entries are closure artifacts.** Rejecting a candidate, closing an iteration, or superseding a bet: the Atlas entry names the evidence (the shipped commit, the competitor change, the failed check), never just the verdict. "Considered, rejected" without a cited reason corrupts the ledger's value.
+- **8. Close the loop fully — a shipped iteration is PR + Atlas + session log, as one unit.** The PR merging is the midpoint, not the end: Atlas entry written and schema-validated, session log terminal entry paired, local state synced. Gate: the next `/vibe-iterate` run finds the ledger already true.
+
+Boundary note: move 11 (volunteer the adjacent find) operates *within* the no-auto-fire hard rule — volunteering means proposing a mode in one line, never running one. The proposal costs the user one line to decline.
+
+*Provenance: operating-doctrine v1.0.0 (2026-07-06).*
+
 ## Session + friction logging (Levels 2 + 3 of the Self-Evolving Plugin Framework)
 
 Two internal SKILLs that every banner mode and `bootstrap` invokes:
