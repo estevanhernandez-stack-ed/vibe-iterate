@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="assets/brand/icon.svg" width="120" alt="vibe-iterate mark">
   <img alt="Vibe Iterate — post-ship product iteration, one PR at a time" src="https://626labs.dev/assets/brand/plugins/vibe-iterate-banner-1500x500.png" />
 </p>
 
